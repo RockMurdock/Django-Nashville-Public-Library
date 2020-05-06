@@ -9,8 +9,11 @@
     <h1>Libraries</h1>
 
     <ol>
-    {% for libraries in all_libraries %}
-        <li>{{ libraries.name }} at {{ libraries.address }}</li>
+    {% for library in all_libraries %}
+        <li>
+            <a href="{% url 'libraryapp:library' library.id %}">
+                {{ library.name }}</a>
+        </li>
     {% endfor %}
     </ol>
   </body>
