@@ -36,6 +36,7 @@ def book_list(request):
                 book.year_published = row['year_published']
                 book.librarian_id = row['librarian_id']
                 book.library_id = row['library_id']
+                book.publisher = row['publisher']
 
                 all_books.append(book)
 
