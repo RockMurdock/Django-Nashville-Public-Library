@@ -17,14 +17,17 @@
 
     <ol class="books">
     {% for book in all_books %}
-        <li class="books">
-            <a class="book__title" href="{% url 'libraryapp:book' book.id %}"> {{ book.title }} </a>
-            <div class="book__description">by {{book.author}} published in {{book.year_published}} by {{book.publisher}}</div>
+        <li class="book">
+            <a class="book__title" href="{% url 'libraryapp:book' book.id %}"> {{ book.title }}</a>
+            <div class="book__description">
+                by {{book.author}} published in {{book.year_published}}
+            </div>
             <button id="detail--{{ book.id }}">Details</button>
         </li>
     {% endfor %}
     </ol>
 {% endblock %}
+
 {% block scripts %}
     <script src="{% static 'scripts/books.js' %}"></script>
 {% endblock %}
