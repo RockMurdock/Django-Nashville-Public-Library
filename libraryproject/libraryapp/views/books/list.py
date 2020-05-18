@@ -7,38 +7,40 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def book_list(request):
     if request.method == 'GET':
-        with sqlite3.connect(Connection.db_path) as conn:
-            conn.row_factory = sqlite3.Row
-            db_cursor = conn.cursor()
+        # with sqlite3.connect(Connection.db_path) as conn:
+        #     conn.row_factory = sqlite3.Row
+        #     db_cursor = conn.cursor()
 
-            db_cursor.execute("""
-            select
-                b.id,
-                b.title,
-                b.isbn,
-                b.author,
-                b.year_published,
-                b.librarian_id,
-                b.library_id,
-                b.publisher
-            from libraryapp_book b
-            """)
+        #     db_cursor.execute("""
+        #     select
+        #         b.id,
+        #         b.title,
+        #         b.isbn,
+        #         b.author,
+        #         b.year_published,
+        #         b.librarian_id,
+        #         b.library_id,
+        #         b.publisher
+        #     from libraryapp_book b
+        #     """)
 
-            all_books = []
-            dataset = db_cursor.fetchall()
+        #     all_books = []
+        #     dataset = db_cursor.fetchall()
 
-            for row in dataset:
-                book = Book()
-                book.id = row['id']
-                book.title = row['title']
-                book.isbn = row['isbn']
-                book.author = row['author']
-                book.year_published = row['year_published']
-                book.librarian_id = row['librarian_id']
-                book.library_id = row['library_id']
-                book.publisher = row['publisher']
+        #     for row in dataset:
+        #         book = Book()
+        #         book.id = row['id']
+        #         book.title = row['title']
+        #         book.isbn = row['isbn']
+        #         book.author = row['author']
+        #         book.year_published = row['year_published']
+        #         book.librarian_id = row['librarian_id']
+        #         book.library_id = row['library_id']
+        #         book.publisher = row['publisher']
 
-                all_books.append(book)
+        #         all_books.append(book)
+        all_books = Book.objects.all()
+
 
         template = 'books/list.html'
         context = {
@@ -53,18 +55,28 @@ def book_list(request):
         with sqlite3.connect(Connection.db_path) as conn:
             db_cursor = conn.cursor()
 
-            db_cursor.execute("""
-            INSERT INTO libraryapp_book
-            (
-                title, author, isbn,
-                year_published, library_id, librarian_id,
-                publisher
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """,
-            (form_data['title'], form_data['author'],
-                form_data['isbn'], form_data['year_published'],
-                request.user.librarian.id, form_data["location"],
-                form_data['publisher']))
+            # db_cursor.execute("""
+            # INSERT INTO libraryapp_book
+            # (
+            #     title, author, isbn,
+            #     year_published, library_id, librarian_id,
+            #     publisher
+            # )
+            # VALUES (?, ?, ?, ?, ?, ?, ?)
+            # """,
+            # (form_data['title'], form_data['author'],
+            #     form_data['isbn'], form_data['year_published'],
+            #     request.user.librarian.id, form_data["location"],
+            #     form_data['publisher']))
+            new_book = Book()
+            new_book.title = form_data['title']
+            new_book.author = form_data['author']
+            new_book.isbn = form_data['isbn']
+            new_book.year_published = form_data['year_published']
+            new_book.publisher = form_data['publisher']
+            new_book.librarian_id = request.user.librarian.id 
+            new_book.library_id = form_data['library']
 
-        return redirect(reverse('libraryapp:books'))
+            new_book.save()
+
+            return redirect(reverse('libraryapp:books'))
