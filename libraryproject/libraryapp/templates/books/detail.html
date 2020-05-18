@@ -10,9 +10,11 @@
         <div>Published in {{ book.year_published }}</div>
         <div>ISBN: {{ book.isbn }}</div>
         <div>Publisher: {{ book.publisher }}</div>
+        <div>Located in the {{ book.library.name }}</div>
+        <div>Registered by {{ book.librarian.user.first_name }} {{ book.librarian.user.last_name }}</div>
     </section>
 
-    <section>
+    <section id="book-actions" style="display:flex;">
         <form action="{% url 'libraryapp:book' book.id %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="actual_method" value="DELETE">

@@ -31,8 +31,8 @@
             <input id="publisher" type="text" name="publisher" value="{{book.publisher}}">
         </fieldset>
         <fieldset>
-            <label for="location">Library: </label>
-            <select id="location" type="text" name="location">
+            <label for="library">Library: </label>
+            <select id="library" type="text" name="library">
                     {% for library in all_libraries %}
                     <option {% if library.id == book.library_id %}selected{% endif %} value="{{ library.id }}">
                         {{ library.name }}</option>
